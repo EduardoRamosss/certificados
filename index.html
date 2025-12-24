@@ -5,96 +5,225 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meus Certificados - Eduardo Ramos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* Estilos Gerais */
+        /* --- 1. Variáveis de Cores e Efeitos (A mágica acontece aqui) --- */
+        :root {
+            /* Fundo com gradiente sutil para profundidade */
+            --bg-gradient: radial-gradient(circle at top center, #1a1a2e 0%, #0d0d12 100%);
+            
+            /* Cor de destaque principal (Um roxo/azul vibrante) */
+            --primary-color: #6366f1;
+            /* Cor de destaque secundária (para gradientes) */
+            --secondary-color: #a855f7;
+
+            /* Cores de Texto */
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            
+            /* Efeito de Vidro (Glassmorphism) para os cartões */
+            --card-glass: rgba(30, 30, 40, 0.6);
+            --card-border: 1px solid rgba(255, 255, 255, 0.1);
+            --blur-effect: blur(12px);
+
+            /* Sombras Neon */
+            --neon-glow: 0 0 20px rgba(99, 102, 241, 0.15), 0 0 40px rgba(99, 102, 241, 0.05);
+        }
+
+        /* --- 2. Reset e Base --- */
+        * { box-sizing: border-box; }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
+            padding: 60px 20px;
+            /* MUDANÇA 1: Fundo com gradiente em vez de cor chapada */
+            background: var(--bg-gradient); 
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh; /* Garante que o gradiente cubra tudo */
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 0;
+            /* Uma luz ambiente sutil atrás do conteúdo principal */
+            box-shadow: var(--neon-glow);
+            border-radius: 30px;
+            padding: 40px;
+            background: rgba(255,255,255,0.02); /* Leve camada para destacar do fundo */
         }
 
+        /* --- 3. Tipografia de Impacto --- */
         h2 {
             text-align: center;
-            color: #333;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 60px;
+            letter-spacing: -1px;
+            /* MUDANÇA 2: Gradiente de texto mais agressivo e moderno */
+            background: linear-gradient(135deg, #fff 30%, var(--primary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(99, 102, 241, 0.3); /* Sombra colorida no texto */
         }
 
-        /* Estilização das categorias */
-        .category {
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            background: #f9f9f9;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+        .category { margin-bottom: 60px; }
 
         .category h3 {
-            background: #3b3197;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 0;
+            font-size: 1.5rem;
+            color: var(--text-main);
+            margin-bottom: 30px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
         }
 
-        /* Blocos de cursos dentro da categoria */
+        /* Pequena linha gradiente antes do título da categoria */
+        .category h3::before {
+            content: '';
+            display: block;
+            width: 30px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            margin-right: 15px;
+            border-radius: 4px;
+        }
+
+        /* --- 4. Cartões com "Glassmorphism" (Efeito de Vidro) --- */
         .course-box {
-            background: #fff;
-            margin-top: 10px;
-            padding: 10px;
-            border-left: 5px solid #3b3197;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            /* MUDANÇA 3: Efeito de vidro fosco */
+            background: var(--card-glass);
+            backdrop-filter: var(--blur-effect); -webkit-backdrop-filter: var(--blur-effect);
+            border: var(--card-border);
+            
+            margin-top: 25px;
+            padding: 30px;
+            border-radius: 20px;
+            /* Removemos a borda esquerda sólida e trocamos por um brilho sutil */
+            border-left: none; 
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efeito elástico */
+            position: relative;
+            overflow: hidden; /* Necessário para o efeito de brilho passar */
+        }
+
+        /* Efeito de luz passando pelo cartão ao passar o mouse */
+        .course-box::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+            opacity: 0; pointer-events: none;
+        }
+
+        .course-box:hover {
+            transform: translateY(-7px) scale(1.02);
+            border-color: rgba(99, 102, 241, 0.4); /* Borda brilha em roxo */
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6), var(--neon-glow); /* Sombra mais forte + brilho neon */
+        }
+        
+        .course-box:hover::after {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%); /* Movimento do brilho */
         }
 
         .course-title {
-            font-weight: bold;
-            font-size: 16px;
-            color: #333;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin: 0 0 20px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* MUDANÇA 4: Ícone quadrado gradiente em vez de seta simples */
+        .course-title::before {
+            content: "";
+            width: 12px; height: 12px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            margin-right: 15px;
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.5); /* O ícone brilha */
         }
 
-        ul {
-            list-style: none;
-            padding: 0;
-            margin-top: 5px;
-        }
-
-        li {
-            background: #eee;
-            margin: 5px 0;
-            padding: 8px;
-            border-radius: 5px;
-        }
+        /* --- 5. Links Modernos --- */
+        ul { list-style: none; padding: 0; margin: 0; }
+        li { margin: 12px 0; }
 
         a {
-            color: #3b3197;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            color: var(--text-muted);
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 500;
+            border-radius: 12px;
+            background-color: rgba(0, 0, 0, 0.2); /* Fundo mais escuro que o cartão */
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
         }
 
         a:hover {
-            text-decoration: underline;
+            background-color: var(--primary-color); /* Cor sólida vibrante no hover */
+            color: #ffffff;
+            border-color: transparent;
+            padding-left: 25px;
+            /* Sombra colorida forte que faz o botão "saltar" */
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.6); 
+            transform: translateX(5px);
+        }
+
+        a::after {
+            content: "→"; /* Seta mais moderna */
+            font-family: sans-serif;
+            font-size: 1.2rem;
+            opacity: 0.6;
+            transition: all 0.3s;
+        }
+
+        a:hover::after {
+            opacity: 1;
+            transform: translateX(5px); /* Seta se move */
+        }
+
+        /* Ajuste específico para o card verde de atividades */
+        .course-box[style*="#10b981"] .course-title::before {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+        .course-box[style*="#10b981"]:hover {
+             border-color: rgba(16, 185, 129, 0.4);
+             --neon-glow: 0 0 20px rgba(16, 185, 129, 0.15), 0 0 40px rgba(16, 185, 129, 0.05);
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            body { padding: 30px 15px; }
+            .container { padding: 20px; }
+            h2 { font-size: 2rem; margin-bottom: 40px; }
+            .course-box { padding: 20px; }
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2>Certificados - Eduardo Ramos</h2>
+        <h2>Certificados <br> Eduardo Ramos</h2>
 
-        <!-- Seção Cursos -->
         <div class="category">
             <h3>Cursos</h3>
 
-            <!-- Curso Excel -->
             <div class="course-box">
                 <p class="course-title">Curso Excel - 65 Horas - Fundação Bradesco</p>
                 <ul>
@@ -105,7 +234,6 @@
                 </ul>
             </div>
 
-            <!-- Curso Power BI -->
             <div class="course-box">
                 <p class="course-title">Curso de Power Bi - 37 Horas - Fundação Bradesco</p>
                 <ul>
@@ -118,7 +246,6 @@
                 </ul>
             </div>
 
-            <!-- Power BI Voitto -->
             <div class="course-box">
                 <p class="course-title"> Cursos Onlines - Voitto</p>
                 <ul>
@@ -126,7 +253,6 @@
                 </ul>
             </div>
 
-            <!-- Senai -->
             <div class="course-box">
                 <p class="course-title">Cursos Online - Senai</p>
                 <ul>
@@ -136,7 +262,6 @@
                 </ul>
             </div>
 
-            <!-- Fundação Getulio Vargas - FGV -->
             <div class="course-box">
                 <p class="course-title">Cursos Online - FGV</p>
                 <ul>
@@ -147,7 +272,6 @@
             
         </div>
 
-        <!-- Seção Congressos -->
         <div class="category">
             <h3>Congressos</h3>
 
@@ -179,14 +303,16 @@
             </div>
         </div>
 
-        <!-- Seção Atividades Complementares -->
         <div class="category">
             <h3>Atividades Complementares</h3>
-            <ul>
-                <li><a href="certificados/projeto_pesquisa.pdf" target="_blank">Projeto de Pesquisa: Cadeira de Rodas Inteligente</a> - [2024 - Momento]</li>
-                <li><a href="Eduardo - 2024 -assinado.pdf" target="_blank">Participação na EJEL</a> - [2024 - 2025]</li>
-                <li><a href="Certificado.pdf" target="_blank">Tutor no Programa Piloto de Tutoria (Cálculo 1)</a> - [2023 - 2025]</li>
-            </ul>
+            <div class="course-box" style="border-left-color: #10b981;"> 
+                <p class="course-title">Experiências e Projetos</p>
+                <ul>
+                    <li><a href="certificados/projeto_pesquisa.pdf" target="_blank">Projeto de Pesquisa: Cadeira de Rodas Inteligente</a> - [2024 - Momento]</li>
+                    <li><a href="Eduardo - 2024 -assinado.pdf" target="_blank">Participação na EJEL</a> - [2024 - 2025]</li>
+                    <li><a href="Certificado.pdf" target="_blank">Tutor no Programa Piloto de Tutoria (Cálculo 1)</a> - [2023 - 2025]</li>
+                </ul>
+            </div>
         </div>
     </div>
 </body>
